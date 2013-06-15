@@ -1,0 +1,95 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require_self
+ *= require_tree .
+ */
+
+/* Listings table styling */
+
+.listings_table table {
+	border: 1px solid black;
+	text-align: center;
+}
+
+.listings_table th {
+	color: white;
+	background-color: darkblue;
+	padding: 10px;
+}
+
+.listings_table #listing_link {
+	text-align: left;
+	padding-left: 5px;
+}
+
+.listings_table #listing_link a:hover {
+	color: white;
+}
+
+.listings_table #listing_link a:visited {
+	color: #8c9097
+}
+
+.listings_table #listing_link a:visited:hover {
+	color: white;
+}
+
+.list_line_odd {
+	background-color: #bbd0fb;
+}
+
+.list_line_even {
+	background-color: #eaf0fd;
+}
+
+.listings_table tr:hover {
+	background-color: #f79865;
+	color: white;
+}
+
+#listings_title {
+	font: small-caps 40px/40px "Consolas", serif;
+	color: darkblue;
+}
+
+
+
+
+/* Layout template stylings */
+#banner {
+	background: #bbd0fb;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	border-bottom: 2px solid;
+	font: small-caps 40px/40px "Consolas", serif;
+	color: darkblue;
+	text-align: left;
+}
+
+#sub_banner {
+	background: #eaf0fd;
+	padding-bottom: 5px;
+	padding-left: 20px;
+	text-align: left;
+	color: black;
+	font: small-caps 20px/15px "Consolas", serif;
+}
+
+#columns {
+	/* background: #141; */
+}
+
+#main {
+	padding-top: 4ex;
+	padding-left: 2em;
+	background: white;
+}
