@@ -112,6 +112,70 @@ class DatabaseManager
 		return $result;
 	}
 
+	function RetrieveFavoriteListings()
+	{
+		$result = new DatabaseResult(false, 'Have not checked db yet');
+		$con = $this->OpenConnection();
+
+		$query = "select * FROM clbase_development.listings where `favorite` = 1 order by `listing_date` desc";
+
+		//Prepare a statement
+		$stmt = mysqli_stmt_init($con);
+
+		if(mysqli_stmt_prepare($stmt, $query))
+		{
+			if($stmt->execute())
+			{
+				if(!$db_results = $stmt->get_result())
+				{
+					$result->SetSuccessFlag(false);
+					$result->SetReason("Trouble retrieving results in GetFavoriteListings()");
+				}
+				else
+				{
+					$rows = $db_results->fetch_all();
+					$listings = array();
+
+					foreach($rows as $row)
+					{
+						$listing = new Listing();
+
+						$listing->SetID($row[0]);
+						$listing->SetTitle($row[1]);
+						$listing->SetDate($row[2]);
+						$listing->SetPrice($row[3]);
+						$listing->SetBedroomCount($row[4]);
+						$listing->SetLocation($row[5]);
+						$listing->SetImageFlag($row[6]);
+						$listing->SetLink($row[9]);
+						$listing->SetFavoriteFlag($row[11]);
+
+						array_push($listings, $listing);
+					}
+
+					$result->SetSuccessFlag(true);
+					$result->SetPayload($listings);
+				}
+
+				mysqli_stmt_close($stmt);
+			}
+			else
+			{
+				$result->SetSuccessFlag(false);
+				$result->SetReason("Trouble executing query in GetFavoriteListings()");
+			}
+		}
+		else
+		{
+			$result->SetSuccessFlag(false);
+			$result->SetReason("Trouble setting up statement in GetFavoriteListings()");
+		}
+
+		$this->CloseConnection($con);
+
+		return $result;
+	}
+
 	//will return the updated favorite value
 	function ReverseFavorite($id)
 	{
