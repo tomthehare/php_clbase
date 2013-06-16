@@ -176,6 +176,53 @@ class DatabaseManager
 		return $result;
 	}
 
+	function DeleteListing($id)
+	{
+		//Check and see if there is a listing with that id
+		$favorite_state_result = $this->GetFavoriteState($id);
+		$result = new DatabaseResult(false, 'did nothing yet');
+
+		if($favorite_state_result->GetSuccessFlag())
+		{
+			$query = 
+				"delete from listings where `id` = ?";
+
+			$con = $this->OpenConnection();
+
+			$stmt = mysqli_stmt_init($con);
+
+			if(mysqli_stmt_prepare($stmt, $query))
+			{
+				$stmt->bind_param('i', $id);
+
+				if($stmt->execute())
+				{
+					$result->SetReason('listing deleted successfully');
+					$result->SetSuccessFlag(true);
+				}
+				else
+				{
+					$result->SetSuccessFlag(false);
+					$result->SetReason("error executing query: $query");
+				}
+			}
+			else
+			{
+				$result->SetSuccessFlag(false);
+				$result->SetReason("error preparing statement in DeleteListing()");
+			}
+
+			$this->CloseConnection($con);
+		}
+		else
+		{
+			$result->SetSuccessFlag(false);
+			$result->SetReason("Could not find listing with id = $id");
+		}
+
+		return $result;
+	}
+
 	//will return the updated favorite value
 	function ReverseFavorite($id)
 	{

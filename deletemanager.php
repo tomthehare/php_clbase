@@ -1,4 +1,5 @@
 <?php
+
 	require_once("./databasemanager.php");
 
 	$response = '';
@@ -9,14 +10,15 @@
 	{
 		$dbmngr = new DatabaseManager();
 
-		$result = $dbmngr->ReverseFavorite($listing_id);
+		$result = $dbmngr->DeleteListing($listing_id);
 
 		if($result->GetSuccessFlag())
 		{
-			// echo "<h1>new favorite state: </h1>";
-			// echo var_dump($result->GetPayload());
-
-			$response = $result->GetPayload() == true ? "Unfavorite" : "Favorite";
+			$response = "true";
+		}
+		else
+		{
+			$response = $result->GetReason();
 		}
 	}
 
