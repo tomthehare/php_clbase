@@ -117,23 +117,29 @@ class DatabaseManager
 	{
 		$result = new DatabaseResult(false, 'Did nothing');
 		$new_state = null;
+
+		//get current state first
 		$get_state_result = $this->GetFavoriteState($id);
 
 		if($get_state_result->GetSuccessFlag())
 		{	
 			$current_state = $get_state_result->GetPayload();
+
 			$new_state = !$current_state;
+
+			//now save new state
 			$reverse_state_result = $this->SaveFavoriteState($id, $new_state);
 
 			if(!$reverse_state_result->GetSuccessFlag())
 			{
 				$result->SetReason('Could not save new state for id='.$id);
-				$result->SetSuccessFlag(false);				
+				$result->SetSuccessFlag(false);		
 			}
 			else
 			{
 				$result->SetSuccessFlag(true);
 				$result->SetReason('Successfully flipped state');
+				$result->SetPayload($reverse_state_result->GetPayload());
 			}		
 		}
 		else
@@ -142,12 +148,49 @@ class DatabaseManager
 			$result->SetSuccessFlag(false);
 		}
 
+		// echo "<h1>final result from ReverseFavorite()</h1>";
+		// echo var_dump($result);
 		return $result;
 	}
 
 	private function SaveFavoriteState($id, $state)
 	{
+		$result = new DatabaseResult(false, 'Did nothing');
 
+		$con = $this->OpenConnection();
+
+		$query = "update clbase_development.listings set `favorite` = ? where `id` = ?;";
+
+		$stmt = mysqli_stmt_init($con);
+
+		if(mysqli_stmt_prepare($stmt, $query))
+		{
+			$stmt->bind_param('ii', $state, $id);
+
+			if($stmt->execute())
+			{
+				$result->SetReason('state updated successfully');
+				$result->SetSuccessFlag(true);
+				$result->SetPayload($state);
+			}
+			else
+			{
+				$result->SetSuccessFlag(false);
+				$result->SetReason("Trouble executing: $query");
+			}
+		}
+		else
+		{
+			$result->SetSuccessFlag(false);
+			$result->SetReason("Trouble setting up statement in SaveFavoriteState()");
+		}
+
+		$this->CloseConnection($con);
+
+		// echo "<h1>result coming back from SaveState()</h1>";
+		// echo var_dump($result);
+
+		return $result;
 	}
 
 	private function GetFavoriteState($id)
@@ -158,7 +201,7 @@ class DatabaseManager
 
 		$query = "select `favorite` from listings where `id` = ?";
 
-		$stmt = msqli_stmt_init($con);
+		$stmt = mysqli_stmt_init($con);
 
 		if(mysqli_stmt_prepare($stmt, $query))
 		{
@@ -173,24 +216,42 @@ class DatabaseManager
 				}
 				else
 				{
-					$favorite_state = $db_results[0];
-					echo var_dump($favorite_state);
+					$state_results = $db_results->fetch_all();
 
+					if(count($state_results) > 0)
+					{
+						$favorite_state = $state_results[0][0];
 
+						$result->SetReason('state retrieved successfully');
+						$result->SetSuccessFlag(true);
+						$result->SetPayload($favorite_state);
+					}
+					else
+					{
+						$result->SetSuccessFlag(false);
+						$result->SetReason("No record found with id = $id");
+						$result->SetPayload(null);
+					}
 				}
 			}
 			else
 			{
-
+				$result->SetSuccessFlag(false);
+				$result->SetReason("Trouble executing: $query");
 			}
 		}
 		else
 		{
-
+			$result->SetSuccessFlag(false);
+			$result->SetReason("Trouble setting up statement in GetFavoriteState()");
 		}
 
-
 		$this->CloseConnection($con);
+
+		// echo "<h1>result coming from GetState(id)</h1>";
+		// echo var_dump($result);
+
+		return $result;
 	}
 
 }

@@ -106,6 +106,7 @@
           dataType: "json",
           success: function(data) {
             $(".favorite_button#" + id).val(data);
+            //alert(data);
           },
           error: function(XMLHTTPRequest, textStatus, errorThrown) {
             alert('error: ' + XMLHTTPRequest.responseText);
