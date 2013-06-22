@@ -10,6 +10,7 @@ class Listing
 	private $image_flag;
 	private $title;
 	private $link;
+	private $shared;
 
 	//need to figure out way to populate this
 	private $favorite_flag;
@@ -64,7 +65,7 @@ class Listing
 
 	function SetBedroomCount($bedroom_count)
 	{
-		$this->bedroom_count = $bedroom_count;
+		$this->bedroom_count = ($bedroom_count == -1 ? "N/A" : $bedroom_count);
 	}
 
 	function GetLocation()
@@ -115,5 +116,15 @@ class Listing
 	function SetLink($link)
 	{
 		$this->link = $link;
+	}
+
+	function GetSharedFlag()
+	{
+		return $this->shared;
+	}
+
+	function SetSharedFlag($flag)
+	{
+		$this->shared = $flag;
 	}
 }

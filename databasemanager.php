@@ -46,12 +46,12 @@ class DatabaseManager
 		echo "password: $this->password<br/>";
 	}
 
-	function RetrieveListings($size = 200)
+	function RetrieveSharedListings($size = 200)
 	{
 		$result = new DatabaseResult(false, 'Have not checked db yet');
 		$con = $this->OpenConnection();
 
-		$query = "select * FROM clbase_development.listings order by `listing_date` desc limit ?";
+		$query = "select * from clbase_development.listings where `deleted` <> 1 AND `shared` = 1 order by `listing_date` desc limit ?";
 
 		//Prepare a statement
 		$stmt = mysqli_stmt_init($con);
@@ -74,17 +74,81 @@ class DatabaseManager
 
 					foreach($rows as $row)
 					{
-						$listing = new Listing();
+						$listing = $this->ExtractRowDetailsIntoListingObject($row);
+						
+						array_push($listings, $listing);
+					}
 
-						$listing->SetID($row[0]);
-						$listing->SetTitle($row[1]);
-						$listing->SetDate($row[2]);
-						$listing->SetPrice($row[3]);
-						$listing->SetBedroomCount($row[4]);
-						$listing->SetLocation($row[5]);
-						$listing->SetImageFlag($row[6]);
-						$listing->SetLink($row[9]);
-						$listing->SetFavoriteFlag($row[11]);
+					$result->SetSuccessFlag(true);
+					$result->SetPayload($listings);
+				}
+
+				mysqli_stmt_close($stmt);
+			}
+			else
+			{
+				$result->SetSuccessFlag(false);
+				$result->SetReason("Trouble executing query in GetListings()");
+			}
+		}
+		else
+		{
+			$result->SetSuccessFlag(false);
+			$result->SetReason("Trouble setting up statement in GetListings()");
+		}
+
+		$this->CloseConnection($con);
+
+		return $result;
+	}
+
+	private function ExtractRowDetailsIntoListingObject($row)
+	{
+		$listing = new Listing();
+
+		$listing->SetID($row[0]);
+		$listing->SetTitle($row[1]);
+		$listing->SetDate($row[2]);
+		$listing->SetPrice($row[3]);
+		$listing->SetBedroomCount($row[4]);
+		$listing->SetLocation($row[5]);
+		$listing->SetImageFlag($row[6]);
+		$listing->SetLink($row[9]);
+		$listing->SetFavoriteFlag($row[11]);
+		$listing->SetSharedFlag($row[13]);
+
+		return $listing;
+	}
+
+	function RetrieveListings($size = 200)
+	{
+		$result = new DatabaseResult(false, 'Have not checked db yet');
+		$con = $this->OpenConnection();
+
+		$query = "select * FROM clbase_development.listings where `deleted` <> 1 AND `shared` = 0 order by `listing_date` desc limit ?";
+
+		//Prepare a statement
+		$stmt = mysqli_stmt_init($con);
+
+		if(mysqli_stmt_prepare($stmt, $query))
+		{
+			$stmt->bind_param('i', $size);
+
+			if($stmt->execute())
+			{
+				if(!$db_results = $stmt->get_result())
+				{
+					$result->SetSuccessFlag(false);
+					$result->SetReason("Trouble retrieving results in GetListings()");
+				}
+				else
+				{
+					$rows = $db_results->fetch_all();
+					$listings = array();
+
+					foreach($rows as $row)
+					{
+						$listing = $this->ExtractRowDetailsIntoListingObject($row);
 
 						array_push($listings, $listing);
 					}
@@ -138,17 +202,7 @@ class DatabaseManager
 
 					foreach($rows as $row)
 					{
-						$listing = new Listing();
-
-						$listing->SetID($row[0]);
-						$listing->SetTitle($row[1]);
-						$listing->SetDate($row[2]);
-						$listing->SetPrice($row[3]);
-						$listing->SetBedroomCount($row[4]);
-						$listing->SetLocation($row[5]);
-						$listing->SetImageFlag($row[6]);
-						$listing->SetLink($row[9]);
-						$listing->SetFavoriteFlag($row[11]);
+						$listing = $this->ExtractRowDetailsIntoListingObject($row);
 
 						array_push($listings, $listing);
 					}
@@ -184,8 +238,10 @@ class DatabaseManager
 
 		if($favorite_state_result->GetSuccessFlag())
 		{
+			// $query = 
+			// 	"delete from listings where `id` = ?";
 			$query = 
-				"delete from listings where `id` = ?";
+				"update listings set `deleted` = 1 where `id` = ?";
 
 			$con = $this->OpenConnection();
 

@@ -32,6 +32,28 @@ class ListingsManager
 
 		$even = !$even;
 	}
+
+	public static function start_table()
+	{
+		echo "<div class='listings_table'>
+        <table>
+          <tr>
+            <th>Title</th>
+            <th>Listing date</th>
+            <th>Price</th>
+            <th>Bedroom count</th>
+            <th>Location</th>
+            <th>Image</th>
+            <th>Fav</th> 
+            <th>Del</th>
+          </tr>";
+	}
+
+	public static function end_table()
+	{
+		echo "</table>
+        </div>";
+	}
 }
 
 

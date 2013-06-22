@@ -1,0 +1,6 @@
+ideas for clbase
+
+- push locations to search to a database table (duh)
+- make it searchable based on query_location and location within a date range, or maybe last 3 days or something
+- make a script to clean up posts that are greater than 20 days old, or maybe add it to listings populator call
+- add some code to the view to make it give 'headings' to the location

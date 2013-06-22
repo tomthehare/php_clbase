@@ -17,12 +17,19 @@
 .listings_table table {
 	border: 1px solid black;
 	text-align: center;
+	/*table-layout:fixed;*/
+	width: 100%;
 }
 
 .listings_table th {
 	color: white;
 	background-color: darkblue;
 	padding: 10px;
+}
+
+.listings_table td {
+	max-width: 300px;
+	word-wrap:break-word;
 }
 
 .listings_table #listing_link {

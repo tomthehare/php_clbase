@@ -20,7 +20,7 @@ $(function() {
 	    //turn off buttons for the time being.
 	    disableButton(fav_btn);
 	    disableButton(del_btn);
-	    del_btn.prop('value', 'Deleting...');
+	    del_btn.prop('value', '...');
 
 	    //ajax call using id
 	    $.ajax({

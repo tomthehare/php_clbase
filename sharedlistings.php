@@ -9,25 +9,13 @@
 
   <div id="columns">
     <div id="main">
-        <div id="listings_title">Recent Boston Listings</div>
+        <div id="listings_title">Shared Boston Listings</div>
 
-        <div class="listings_table">
-        <table>
-          <tr>
-            <th>Title</th>
-            <th>Listing date</th>
-            <th>Price</th>
-            <th>Bedroom count</th>
-            <th>Location</th>
-            <th>Image</th>
-            <th>Fav</th> <!-- Favorite heading -->
-            <th>Del</th> <!-- Delete heading -->
-          </tr>
+       <?php ListingsManager::start_table();
 
-        <?php
             //grab first 200 listings or something
             $dbmngr = new DatabaseManager();
-            $result = $dbmngr->RetrieveListings(1000);
+            $result = $dbmngr->RetrieveSharedListings(1000);
 
             if($result != null)
             {
@@ -40,9 +28,9 @@
                 }
               }
             }
+        ListingsManager::end_table();
+
         ?>
-        </table>
-        </div>
 
         <br />
 

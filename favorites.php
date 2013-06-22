@@ -2,42 +2,18 @@
   require_once("./databasemanager.php");
   require_once("./listingsmanager.php");
   require_once("./listing.php");
+  require_once("./common_html.php");
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-  <title>CLBASE - Craigslist Boston Area Search Engine</title>
-  <style type='text/css'>
-    @import "css/application.css";
-  </style>
-</head>
-<body>
-  <div id="banner">
-    CLBASE
-  </div>
-  <div id="sub_banner">
-    <a href="favorites.php">Favorites</a> | 
-    <a href="listings.php">Recent Listings</a>
-  </div>
+  <?php CommonHTML::get_header(); ?>
+
   <div id="columns">
     <div id="main">
         <div id="listings_title">Favorite Boston Listings</div>
 
-        <div class="listings_table">
-        <table>
-          <tr>
-            <th>Title</th>
-            <th>Listing date</th>
-            <th>Price</th>
-            <th>Bedroom count</th>
-            <th>Location</th>
-            <th>Image</th>
-            <th></th> <!-- Favorite heading -->
-            <th></th> <!-- Delete heading -->
-          </tr>
-
         <?php
+            ListingsManager::start_table();
+
             //grab first 200 listings or something
             $dbmngr = new DatabaseManager();
             $result = $dbmngr->RetrieveFavoriteListings();
@@ -53,9 +29,10 @@
                 }
               }
             }
-        ?>
-        </table>
-        </div>
+            
+            ListingsManager::end_table();
+
+          ?>
         <br />
     </div>
   </div>
@@ -63,5 +40,4 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
   <script type='text/javascript' src='listings.js'></script>
 
-</body>
-</html>
+<?php CommonHTML::get_footer(); ?>
