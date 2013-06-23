@@ -102,8 +102,6 @@ class CraigsListTool
 	end
 
 	def debug_print(string)
-		# debug = false
-
 		if(@debug)
 			puts string
 			puts ''

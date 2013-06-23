@@ -62,7 +62,7 @@
 	color: white;
 }
 
-#listings_title {
+#page_title {
 	font: small-caps 40px/40px "Consolas", serif;
 	color: darkblue;
 }
@@ -97,6 +97,6 @@
 
 #main {
 	padding-top: 4ex;
-	padding-left: 2em;
+	padding-left: 10px;
 	background: white;
 }

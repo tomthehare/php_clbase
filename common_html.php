@@ -19,7 +19,8 @@ class CommonHTML
 		  <div id='sub_banner'>
 		  	<a href='listings.php'>All Listings</a> | 
 		    <a href='favorites.php'>Favorites</a> | 
-		    <a href='sharedlistings.php'>Shared Listings</a>
+		    <a href='sharedlistings.php'>Shared Listings</a> | 
+		    <a href='settings.php'>Settings</a> 
 		  </div>";
 	}
 

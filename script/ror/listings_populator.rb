@@ -3,27 +3,12 @@
 require_relative 'data_access'
 require_relative 'craigslist_tool'
 require_relative 'logger'
+require_relative 'debug_print'
 
 database_server = "127.0.0.1"
 database_user = "root"
 database_password = "braindrain"
 database_name = "clbase_development"
-
-boston_locations = [
-					"Brookline",
-					"Back+Bay",
-					"Brighton",
-					"Allston",
-					"Cambridge",
-					"Somerville",
-					"South+Boston",
-					"Southie",
-					"Charlestown",
-					"South+End",
-					"Fenway"
-					]
-
-# query a location
 
 clt = CraigsListTool.new()
 log = Logger.new()
@@ -38,7 +23,15 @@ begin #error handling
 	log.log_exec("-------------------------------------")
 	log.log_exec("started update at #{Time.now.to_s}")
 
+	boston_locations = data_access.get_search_locations
+
+	DebugPrint::print "found #{boston_locations.count} locations"
+
 	boston_locations.each do |search_location|
+		#scrub out the spaces in the string and replace with +
+		search_location.gsub!(/\s/, '+')
+
+		DebugPrint::print "processing #{search_location}..."
 
 		#first do non-shared stuff
 		url_string = "http://boston.craigslist.org/search/aap?zoomToPosting=&altView=&query=#{search_location}&srchType=A&minAsk=&maxAsk=1200&bedrooms=1&sort=date"

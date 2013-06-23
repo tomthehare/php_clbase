@@ -9,7 +9,7 @@
 
   <div id="columns">
     <div id="main">
-        <div id="listings_title">Favorite Boston Listings</div>
+        <div id="page_title">Favorite Boston Listings</div>
 
         <?php
             ListingsManager::start_table();

@@ -4,6 +4,7 @@ require 'mysql'
 require 'rubygems'
 require 'date'
 require_relative 'logger'
+require_relative 'debug_print'
 
 class DataAccess
 
@@ -98,6 +99,38 @@ class DataAccess
 			@con = nil if @con #set to nil if not nil
 			# puts "closing db connection"
 		end
+	end
+
+	def get_search_locations
+		return_array = Array.new
+
+		begin
+			@con = Mysql.new @server, @username, @password, @database_name
+
+			DebugPrint::print @con.inspect.to_s
+
+		    retrieve_query = %{
+		    	SELECT * from clbase_development.search_locations 
+		    }
+
+		    rs = @con.query(retrieve_query)
+
+		    if(rs.num_rows > 0)
+		    	DebugPrint::print 'more than 0 rows found in db'
+		    	rs.each do |row|
+		    		return_array.push(row[1])
+		    	end
+			end
+		rescue Exception => e2
+			@log.log_error("Offending retrieve query:\n\n#{retrieve_query}\n\n")
+		    raise e2
+		ensure
+			@con.close if @con #close connection if not nil?
+			@con = nil if @con #set to nil if not nil
+			# puts "closing db connection"
+		end
+
+		return return_array
 	end
 
 	def print

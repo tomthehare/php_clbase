@@ -9,22 +9,11 @@
 
   <div id="columns">
     <div id="main">
-        <div id="listings_title">Recent Boston Listings</div>
-
-        <div class="listings_table">
-        <table>
-          <tr>
-            <th>Title</th>
-            <th>Listing date</th>
-            <th>Price</th>
-            <th>Bedroom count</th>
-            <th>Location</th>
-            <th>Image</th>
-            <th>Fav</th> <!-- Favorite heading -->
-            <th>Del</th> <!-- Delete heading -->
-          </tr>
+        <div id="page_title">Recent Boston Listings</div>
 
         <?php
+            ListingsManager::start_table();
+
             //grab first 200 listings or something
             $dbmngr = new DatabaseManager();
             $result = $dbmngr->RetrieveListings(1000);
@@ -40,9 +29,9 @@
                 }
               }
             }
+       
+            ListingsManager::end_table();
         ?>
-        </table>
-        </div>
 
         <br />
 
