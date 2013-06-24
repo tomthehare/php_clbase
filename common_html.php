@@ -20,7 +20,8 @@ class CommonHTML
 		  	<a href='listings.php'>All Listings</a> | 
 		    <a href='favorites.php'>Favorites</a> | 
 		    <a href='sharedlistings.php'>Shared Listings</a> | 
-		    <a href='settings.php'>Settings</a> 
+		    <a href='settings.php'>Settings</a> | 
+		    <a href='logout.php'>Logout</a>
 		  </div>";
 	}
 

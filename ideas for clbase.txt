@@ -7,3 +7,11 @@ ideas for clbase
 - any way to consolidate ajax calls? (not sure)
 - make the time since post more robust, instead of just days use hours or something
 - theres a problem with when the settings talbe is empty, jquery doesnt know how to add a row because table odesnt exist
+- would like to be able to isolate which area to search from (would def love this to be ajax driven)
+- would like to have a login system that caters to a specific persons search preferences
+	+ this would require them to set up what price range they are looking for as well
+	+ would also allow people to set their locations (city)
+- would be nice to have some tests set up with selenium or something if we go live with this.
+- change input on registration screen for location to something with prepopulated entries
+- change alot of the validation in register/login to jQuery instead
+- need a password reset system set up

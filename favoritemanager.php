@@ -1,5 +1,6 @@
 <?php
 	require_once("./databasemanager.php");
+	require_once("common.php");
 
 	$response = '';
 	$listing_id_chunks = explode('_', $_POST['lid']);

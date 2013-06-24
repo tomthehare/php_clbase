@@ -1,7 +1,10 @@
 <?php //settings
 
-include_once('./common_html.php');
-include_once('./databasemanager.php');
+require_once('./common_html.php');
+require_once('./databasemanager.php');
+require_once("common.php");
+
+check_user_session();
 
 CommonHTML::get_header();
 ?>

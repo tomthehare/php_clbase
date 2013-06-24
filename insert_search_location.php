@@ -1,6 +1,7 @@
 <?php //insert search location script
 
 	require_once('./databasemanager.php');
+	require_once("common.php");
 
 	$dbmngr = new DatabaseManager();
 

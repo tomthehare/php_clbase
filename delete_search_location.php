@@ -1,6 +1,7 @@
 <?php //delete search location script
 
 	require_once('./databasemanager.php');
+	require_once("common.php");
 
 	$id = $_POST['id'];
 
